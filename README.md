@@ -13,7 +13,7 @@ Description
 ## Example
 This library is originally developed and tested on the STM32 Nucleo-64 development board with a STM32F103RB MCU.
 The example shown below use the Multi-function shield connected to the NUCLEO-64 Arduino connectors, as shown in the following image.
-![Nucleo64 F103RB](https://github.com/geraldopugiallidepaiva/DigitalClock/main/images/Nucleo64_F103RB)
+![Nucleo64 F103RB](https://github.com/geraldopugiallidepaiva/DigitalClock/blob/main/images/Nucleo64_F103RB.jpg)
 
 **Attention:** 
 This library was developed for the Multi-function shield connected to the NUCLEO-64 Arduino connectors.
