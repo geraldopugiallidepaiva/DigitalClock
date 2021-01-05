@@ -9,7 +9,7 @@ This library was developed for the Multi-function shield connected to the NUCLEO
 When using the same devices specified above, the corresponding ports and pins are defined by default. When using a different board or shield, it is mandatory to initialize the respective ports and pins for each device with the appropriate funcion.
 
 ## More information ##
-alterar [Getting started](http://google.com)\
-alterar [Library documentation](http://google.com)\
-alterar [Useful documents](http://google.com)\
-alterar [Troubleshooting](http://google.com)
+[Getting started](https://github.com/geraldopugiallidepaiva/DigitalClock/wiki/Getting-started)\
+[Library documentation](https://github.com/geraldopugiallidepaiva/DigitalClock/wiki/Library-documentation)\
+[Troubleshooting](https://github.com/geraldopugiallidepaiva/DigitalClock/wiki/Troubleshooting)\
+[Useful documents](https://github.com/geraldopugiallidepaiva/DigitalClock/wiki/Useful-documents)
