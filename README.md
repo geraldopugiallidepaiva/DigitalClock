@@ -12,5 +12,4 @@ When using the same devices specified above, the corresponding ports and pins ar
 alterar [Getting started](http://google.com)\
 alterar [Library documentation](http://google.com)\
 alterar [Useful documents](http://google.com)\
-alterar [Troubleshooting](http://google.com)\
-alterar [Authors](http://google.com)
+alterar [Troubleshooting](http://google.com)
