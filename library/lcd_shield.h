@@ -26,6 +26,36 @@
 #ifndef INC_LCD_SHIELD_H_
 #define INC_LCD_SHIELD_H_
 
+// LCD display pins on LCD Shield
+#define LCD_RS_Port     GPIOA
+#define LCD_RS_Pin      GPIO_PIN_9
+#define LCD_E_Port      GPIOC
+#define LCD_E_Pin       GPIO_PIN_7
+#define LCD_D4_Port     GPIOB
+#define LCD_D4_Pin      GPIO_PIN_5
+#define LCD_D5_Port     GPIOB
+#define LCD_D5_Pin      GPIO_PIN_4
+#define LCD_D6_Port     GPIOB
+#define LCD_D6_Pin      GPIO_PIN_10
+#define LCD_D7_Port     GPIOA
+#define LCD_D7_Pin      GPIO_PIN_8
 
+// Pushbutton ADC pins on LCD Shield
+#define BUTTON_Port     GPIOA
+#define BUTTON_Pin      GPIO_PIN_0
+
+// Pushbutton ADC values on LCD Shield
+#define BUTTON_SEL_MAX      750
+#define BUTTON_SEL_MIN      500
+#define BUTTON_LEFT_MAX     500
+#define BUTTON_LEFT_MIN     300
+#define BUTTON_DOWN_MAX     300
+#define BUTTON_DOWN_MIN     150
+#define BUTTON_UP_MAX       150
+#define BUTTON_UP_MIN       50
+#define BUTTON_RIGHT_MAX    50
+#define BUTTON_RIGHT_MIN    0
+
+void LCD_Init();
 
 #endif /* INC_LCD_SHIELD_H_ */
