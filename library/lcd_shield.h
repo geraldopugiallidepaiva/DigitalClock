@@ -8,7 +8,7 @@
  *  	Authors: 
  *          Eduardo Villani
  *          Geraldo Lucas Pugialli de Paiva
- *  	Versão: 1.0.0
+ *  	Version: 1.0.0
  *
  *  	Copyright 2021 - Under creative commons license
  *  	Attribution-NonCommercial-ShareAlike 4.0 International
@@ -18,13 +18,18 @@
  *  	warranty, express or implied, as to its usefulness for any purpose.
 
  *
- *  	This API was developed as an assignment for the subject Embedded Systems Programming 
- *      at Universidade Federal de Minas Gerais
+ *  	This API was developed as an assignment for the subject Embedded Systems
+ *  	Programming at Universidade Federal de Minas Gerais
  *      Prof. Ricardo de Oliveira Duarte - Department of Electronic Engineering
  */
 
 #ifndef INC_LCD_SHIELD_H_
 #define INC_LCD_SHIELD_H_
+
+#include "gpio.h"
+#include "string.h"
+#include "stdio.h"
+#include "main.h"
 
 // LCD display pins on LCD Shield
 #define LCD_RS_Port     GPIOA
@@ -56,6 +61,12 @@
 #define BUTTON_RIGHT_MAX    50
 #define BUTTON_RIGHT_MIN    0
 
-void LCD_Init();
+void LCD_Write();
+void LCD_SendCommand();
+void LCD_SendData();
+
+void LCD_Clear();
+
+
 
 #endif /* INC_LCD_SHIELD_H_ */
