@@ -1,6 +1,6 @@
 # DigitalClock
 
-This is a Multi-function Shield API combined with the internal RTC for STM32 microcontrollers based on the STM32F1 HAL library. As a result, it makes possible to implement common digital clock features to designs, such as time displaying, alarm setting, timing and time counting.
+This is a [Multi-function Shield](https://blog.eletrogate.com/guia-completo-do-shield-multi-funcoes-para-arduino/) combined with the internal RTC of the [STM32 Nucleo-64 development board with STM32F103RB MCU](https://www.st.com/en/evaluation-tools/nucleo-f103rb.html) API. As a result, it makes possible to implement common digital clock features to designs, such as time displaying, alarm setting, timing and time counting.
 
 It was developed as an assignment for the subject Embedded Systems Programming at Universidade Federal de Minas Gerais - Prof. Ricardo de Oliveira Duarte - Department of Electronic Engineering
 
