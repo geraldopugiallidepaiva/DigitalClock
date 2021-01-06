@@ -25,6 +25,7 @@
 
 #include "lcd_shield.h"
 
-void LCD_Init(){
+void LCD_Clear(){
 	HAL_GPIO_TogglePin(GPIOA,GPIO_PIN_5);
+	HAL_Delay(100);
 }

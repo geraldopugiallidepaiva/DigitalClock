@@ -29,6 +29,7 @@
 #include "gpio.h"
 #include "string.h"
 #include "stdio.h"
+#include "stm32f103xb.h"
 #include "main.h"
 
 // LCD display pins on LCD Shield

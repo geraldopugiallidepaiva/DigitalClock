@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
 	<name>example</name>
-	<comment />
+	<comment></comment>
 	<projects>
 	</projects>
 	<buildSpec>
@@ -26,24 +26,9 @@
 	</natures>
 	<linkedResources>
 		<link>
-			<name>External libraries/lcd_shield.c</name>
-			<type>1</type>
-			<location>PARENT-2-PROJECT_LOC/library/lcd_shield.c</location>
-		</link>
-		<link>
-			<name>External libraries/lcd_shield.h</name>
-			<type>1</type>
-			<location>PARENT-2-PROJECT_LOC/library/lcd_shield.h</location>
-		</link>
-		<link>
-			<name>External libraries/stm_RTC.c</name>
-			<type>1</type>
-			<location>PARENT-2-PROJECT_LOC/library/stm_RTC.c</location>
-		</link>
-		<link>
-			<name>External libraries/stm_RTC.h</name>
-			<type>1</type>
-			<location>PARENT-2-PROJECT_LOC/library/stm_RTC.h</location>
+			<name>External Libraries</name>
+			<type>2</type>
+			<locationURI>PARENT-2-PROJECT_LOC/library</locationURI>
 		</link>
 	</linkedResources>
 </projectDescription>
