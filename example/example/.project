@@ -25,25 +25,6 @@
 		<nature>fr.ac6.mcu.ide.core.MCUProjectNature</nature>
 	</natures>
 	<linkedResources>
-		<link>
-			<name>Github libraries/lcd_shield.c</name>
-			<type>1</type>
-			<location>PARENT-2-PROJECT_LOC/library/lcd_shield.c</location>
-		</link>
-		<link>
-			<name>Github libraries/lcd_shield.h</name>
-			<type>1</type>
-			<location>PARENT-2-PROJECT_LOC/library/lcd_shield.h</location>
-		</link>
-		<link>
-			<name>Github libraries/stm_RTC.c</name>
-			<type>1</type>
-			<location>PARENT-2-PROJECT_LOC/library/stm_RTC.c</location>
-		</link>
-		<link>
-			<name>Github libraries/stm_RTC.h</name>
-			<type>1</type>
-			<location>PARENT-2-PROJECT_LOC/library/stm_RTC.h</location>
-		</link>
+		
 	</linkedResources>
 </projectDescription>
