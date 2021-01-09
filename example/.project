@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
 	<name>example</name>
-	<comment />
+	<comment></comment>
 	<projects>
 	</projects>
 	<buildSpec>
@@ -25,6 +25,10 @@
 		<nature>fr.ac6.mcu.ide.core.MCUProjectNature</nature>
 	</natures>
 	<linkedResources>
-		
+		<link>
+			<name>library</name>
+			<type>2</type>
+			<locationURI>PARENT-1-PROJECT_LOC/library</locationURI>
+		</link>
 	</linkedResources>
 </projectDescription>
