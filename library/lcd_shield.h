@@ -26,7 +26,6 @@
 #ifndef INC_LCD_SHIELD_H_
 #define INC_LCD_SHIELD_H_
 
-#include "gpio.h"
 #include "string.h"
 #include "stdio.h"
 #include "stm32f103xb.h"
