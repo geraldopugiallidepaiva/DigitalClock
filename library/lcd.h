@@ -3,6 +3,11 @@
  *
  *  Created on: 10/06/2018
  *      Author: Olivier Van den Eede
+ *
+ *  Revision: Geraldo Lucas Pugialli de Paiva
+ *      Changes: "stdio.h" library and "Lcd_clear" prototype included
+ *      Date: 11/01/2021
+ *
  */
 
 #ifndef LCD_H_
@@ -11,6 +16,7 @@
 #include "stm32f1xx_hal.h"
 #include "string.h"
 #include "main.h"
+#include "stdio.h"
 
 // #define LCD20xN 		// For 20xN LCDs
 #define LCD16xN			// For 16xN LCDs
@@ -90,6 +96,7 @@ Lcd_HandleTypeDef Lcd_create(
 		Lcd_PortType port[], Lcd_PinType pin[],
 		Lcd_PortType rs_port, Lcd_PinType rs_pin,
 		Lcd_PortType en_port, Lcd_PinType en_pin, Lcd_ModeTypeDef mode);
+void Lcd_clear(Lcd_HandleTypeDef * lcd);
 
 
 
