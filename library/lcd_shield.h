@@ -31,23 +31,25 @@
 #include "stm32f103xb.h"
 #include "main.h"
 
-// LCD display pins on LCD Shield
-#define LCD_RS_Port     GPIOA
-#define LCD_RS_Pin      GPIO_PIN_9
-#define LCD_E_Port      GPIOC
-#define LCD_E_Pin       GPIO_PIN_7
-#define LCD_D4_Port     GPIOB
-#define LCD_D4_Pin      GPIO_PIN_5
-#define LCD_D5_Port     GPIOB
-#define LCD_D5_Pin      GPIO_PIN_4
-#define LCD_D6_Port     GPIOB
-#define LCD_D6_Pin      GPIO_PIN_10
-#define LCD_D7_Port     GPIOA
-#define LCD_D7_Pin      GPIO_PIN_8
+// LCD display pins on LCD Shield (change accordingly)
+#define LCD_RS_Pin     	GPIOA,GPIO_PIN_9
+#define LCD_E_Pin      	GPIOC,GPIO_PIN_7
+#define LCD_D4_Pin     	GPIOB,GPIO_PIN_5
+#define LCD_D5_Pin     	GPIOB,GPIO_PIN_4
+#define LCD_D6_Pin     	GPIOB,GPIO_PIN_10
+#define LCD_D7_Pin   	GPIOA,GPIO_PIN_8
+#define LCD_LED_Pin		GPIOB,GPIO_PIN_6
 
-// Pushbutton ADC pins on LCD Shield
-#define BUTTON_Port     GPIOA
-#define BUTTON_Pin      GPIO_PIN_0
+// Pushbutton ADC pins on LCD Shield (change accordingly)
+#define BUTTON_Pin     GPIOA,GPIO_PIN_0
+
+// LCD register select pin adresses
+#define LCD_REG_COMMAND 	0
+#define LCD_DATA_COMMAND 	1
+
+// LCD commands
+#define LCD_CLEAR 	0x01
+
 
 // Pushbutton ADC values on LCD Shield
 #define BUTTON_SEL_MAX      750
@@ -61,11 +63,17 @@
 #define BUTTON_RIGHT_MAX    50
 #define BUTTON_RIGHT_MIN    0
 
-void LCD_Write();
-void LCD_SendCommand();
-void LCD_SendData();
+typedef enum{
+	OFF = 0,
+	ON = 1
+} LED;
+
+void LCD_SendNibble(uint8_t data);
+void LCD_SendByte(uint8_t register_select, uint8_t data);
 
 void LCD_Clear();
+
+void LCD_Backlight(LED estado);
 
 
 
