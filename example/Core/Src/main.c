@@ -112,8 +112,8 @@ int main(void)
   };
   Lcd_HandleTypeDef LCD = Lcd_create(ports,pins,GPIOA,GPIO_PIN_9,GPIOC,GPIO_PIN_7,LCD_4_BIT_MODE);
   HAL_GPIO_WritePin(GPIOB,GPIO_PIN_6, 1);
-  Lcd_string(&LCD,"AGORA");
   Lcd_clear(&LCD);
+  Lcd_string(&LCD,"MEU AMORZINHO");
 	while (1) {
 		HAL_GPIO_TogglePin(LD2_GPIO_Port, LD2_Pin);
 		HAL_Delay(500);
