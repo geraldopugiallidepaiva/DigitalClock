@@ -26,7 +26,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include "lcd_shield.h"
+#include "lcd.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -97,12 +97,25 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-	HAL_Delay(500);
-	LCD_Backlight(1);
-	LCD_Clear();
+  // LCD Initialization
+  Lcd_PortType ports[] = {
+		  GPIOB,
+		  GPIOB,
+		  GPIOB,
+		  GPIOA
+  };
+  Lcd_PinType pins[] = {
+		  GPIO_PIN_5,
+		  GPIO_PIN_4,
+		  GPIO_PIN_10,
+		  GPIO_PIN_8
+  };
+  Lcd_HandleTypeDef LCD = Lcd_create(ports,pins,GPIOA,GPIO_PIN_9,GPIOC,GPIO_PIN_7,LCD_4_BIT_MODE);
+  HAL_GPIO_WritePin(GPIOB,GPIO_PIN_6, 1);
+  Lcd_string(&LCD,"AGORA");
 	while (1) {
-		//HAL_GPIO_TogglePin(LD2_GPIO_Port, LD2_Pin);
-		//HAL_Delay(500);
+		HAL_GPIO_TogglePin(LD2_GPIO_Port, LD2_Pin);
+		HAL_Delay(500);
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
