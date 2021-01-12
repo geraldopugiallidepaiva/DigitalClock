@@ -1,6 +1,6 @@
 # DigitalClock
 
-This is a [LCD Shield](https://wiki.dfrobot.com/LCD_KeyPad_Shield_For_Arduino_SKU__DFR0009) combined with the internal RTC of the [NUCLEO-F103RB board](https://www.st.com/en/evaluation-tools/nucleo-f103rb.html) or [NUCLEO-F401Re board](https://www.st.com/en/evaluation-tools/nucleo-f401re.html) API. As a result, it makes possible to implement common digital clock features to designs, such as time displaying, alarm setting, timing and time counting.
+This is a [LCD Shield](https://wiki.dfrobot.com/LCD_KeyPad_Shield_For_Arduino_SKU__DFR0009) combined with the internal RTC of the [NUCLEO-F103RB board](https://www.st.com/en/evaluation-tools/nucleo-f103rb.html) or [NUCLEO-F401RE board](https://www.st.com/en/evaluation-tools/nucleo-f401re.html) API. As a result, it makes possible to implement common digital clock features to designs, such as time displaying, alarm setting, timing and time counting.
 
 It was developed as an assignment for the subject Embedded Systems Programming at Universidade Federal de Minas Gerais - Prof. Ricardo de Oliveira Duarte - Department of Electronic Engineering.
 
