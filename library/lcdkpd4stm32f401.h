@@ -8,9 +8,8 @@
 #ifndef INC_LCDKPD4STM32F401_H_
 #define INC_LCDKPD4STM32F401_H_
 
-// includes 4ilo`s lcd library: https://github.com/4ilo/HD44780-Stm32HAL
-#include "lcd.h"
-#include "stm32f4xx_hal_adc.h"
+#include "adc.h"
+#include "main.h"
 
 #define BTN_RANGE 50
 
