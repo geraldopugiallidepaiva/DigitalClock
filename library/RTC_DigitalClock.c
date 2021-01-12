@@ -46,26 +46,6 @@ void RTC_SetAlarm(uint8_t hour, uint8_t minute, uint8_t second, uint8_t keep) {
 	return;
 }
 
-void RTC_SetTimer(uint8_t hour, uint8_t minute, uint8_t second) {
-	RTC_DateTypeDef auxDate;
-	RTC_TimeTypeDef auxTime;
-	RTC_AlarmTypeDef auxAlarm;
-
-	while (HAL_RTC_GetState(&hrtc) != HAL_RTC_STATE_READY);
-
-	HAL_RTC_GetDate(&hrtc, &auxDate, RTC_FORMAT_BIN);
-	HAL_RTC_GetTime(&hrtc, &auxTime, RTC_FORMAT_BIN);
-
-	uint16_t total_seconds_timer = second + (60 * minute) + (3600 * hour);
-
-	uint8_t seconds_difference = 60 - auxTime.Seconds;
-	uint8_t remainder = total_seconds_timer - seconds_difference;
-
-	uint8_t minutes_difference = 60 - auxTime.Minutes;
-
-
-	return;
-}
-void RTC_StartChrono();
-void RTC_StopChrono();
+void RTC_StartStopChrono();
+void RTC_UpdateChrono();
 void RTC_CorrectTime();
