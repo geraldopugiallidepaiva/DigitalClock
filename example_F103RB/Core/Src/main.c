@@ -39,7 +39,7 @@
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
 /* USER CODE END PD */
-
+#define NUCLEO64_F1xx
 /* Private macro -------------------------------------------------------------*/
 /* USER CODE BEGIN PM */
 
