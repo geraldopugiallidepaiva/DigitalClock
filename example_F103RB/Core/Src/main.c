@@ -121,11 +121,6 @@ int main(void) {
 	HAL_GPIO_WritePin(GPIOB, GPIO_PIN_6, 1);
 	Lcd_clear(&LCD);
 
-	// RTC Initialization
-	RTC_DC_SetDateTime(13, 01, 2021, 11, 39, 00);
-
-	FSM_State = 0;
-
 	while (1) {
 		RTC_DC_Display();
 
