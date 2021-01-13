@@ -39,7 +39,7 @@
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
 /* USER CODE END PD */
-#define NUCLEO64_F1xx
+
 /* Private macro -------------------------------------------------------------*/
 /* USER CODE BEGIN PM */
 
@@ -51,6 +51,7 @@
 RTC_DateTypeDef sDate;
 RTC_AlarmTypeDef sAlarm;
 RTC_TimeTypeDef sTime;
+Lcd_HandleTypeDef LCD;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -65,41 +66,43 @@ volatile uint16_t raw = 0;
 /* USER CODE END 0 */
 
 /**
- * @brief  The application entry point.
- * @retval int
- */
-int main(void) {
-	/* USER CODE BEGIN 1 */
+  * @brief  The application entry point.
+  * @retval int
+  */
+int main(void)
+{
+  /* USER CODE BEGIN 1 */
 
-	/* USER CODE END 1 */
+  /* USER CODE END 1 */
 
-	/* MCU Configuration--------------------------------------------------------*/
+  /* MCU Configuration--------------------------------------------------------*/
 
-	/* Reset of all peripherals, Initializes the Flash interface and the Systick. */
-	HAL_Init();
+  /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
+  HAL_Init();
 
-	/* USER CODE BEGIN Init */
+  /* USER CODE BEGIN Init */
 
-	/* USER CODE END Init */
+  /* USER CODE END Init */
 
-	/* Configure the system clock */
-	SystemClock_Config();
+  /* Configure the system clock */
+  SystemClock_Config();
 
-	/* USER CODE BEGIN SysInit */
+  /* USER CODE BEGIN SysInit */
 
-	/* USER CODE END SysInit */
+  /* USER CODE END SysInit */
 
-	/* Initialize all configured peripherals */
-	MX_GPIO_Init();
-	MX_ADC1_Init();
-	MX_USART2_UART_Init();
-	MX_RTC_Init();
-	/* USER CODE BEGIN 2 */
+  /* Initialize all configured peripherals */
+  MX_GPIO_Init();
+  MX_ADC1_Init();
+  MX_USART2_UART_Init();
+  MX_RTC_Init();
+  /* USER CODE BEGIN 2 */
 
-	/* USER CODE END 2 */
+  /* USER CODE END 2 */
 
-	/* Infinite loop */
-	/* USER CODE BEGIN WHILE */
+  /* Infinite loop */
+  /* USER CODE BEGIN WHILE */
+
 	// LCD Initialization
 	Lcd_PortType ports[] = {
 		GPIOB,
@@ -112,7 +115,7 @@ int main(void) {
 	GPIO_PIN_4,
 	GPIO_PIN_10,
 	GPIO_PIN_8 };
-	Lcd_HandleTypeDef LCD = Lcd_create(ports, pins, GPIOA, GPIO_PIN_9, GPIOC,
+	LCD = Lcd_create(ports, pins, GPIOA, GPIO_PIN_9, GPIOC,
 			GPIO_PIN_7, LCD_4_BIT_MODE);
 	HAL_GPIO_WritePin(GPIOB, GPIO_PIN_6, 1);
 	Lcd_clear(&LCD);
@@ -121,15 +124,47 @@ int main(void) {
 	Lcd_cursor(&LCD, 1, 0);
 	Lcd_string(&LCD, "Processed:");*/
 
-	char texto[] = "00/00/0000";
-	sDate.Date = 11;
-	sDate.Month = 01;
-	sDate.Year = 20;
+	sDate.Date = 28;
+	sDate.Month = 02;
+	sDate.Year = 21;
 	sDate.WeekDay = RTC_WEEKDAY_MONDAY;
 
+	sTime.Hours = 12;
+	sTime.Minutes = 59;
+	sTime.Seconds = 50;
+
+
+	HAL_RTC_SetDate(&hrtc,&sDate,RTC_FORMAT_BIN);
+	HAL_RTC_SetTime(&hrtc,&sTime,RTC_FORMAT_BIN);
+
+	__HAL_RTC_SECOND_ENABLE_IT(&hrtc,RTC_IT_SEC);
+
+
+
 	while (1) {
-		HAL_Delay(1000);
-		HAL_RTC_SetDate(&hrtc,&sDate,RTC_FORMAT_BIN);
+		RTC_DateTypeDef teste;
+		RTC_TimeTypeDef teste1;
+		HAL_RTC_GetTime(&hrtc, &teste1, RTC_FORMAT_BIN);
+		HAL_RTC_GetDate(&hrtc, &teste, RTC_FORMAT_BIN);
+
+		char textoData[] = "00/00/0000";
+		char textoHora[] = "00:00:00";
+		Lcd_cursor(&LCD, 1, 0);
+		Lcd_string(&LCD, TUESDAY_TEXT);
+
+		Lcd_cursor(&LCD, 1, 5);
+		sprintf(textoData, "%02d/%02d/%04d", teste.Date % 31, teste.Month,
+				2000 + teste.Year);
+		Lcd_string(&LCD, textoData);
+
+		Lcd_cursor(&LCD, 0, 0);
+		sprintf(textoHora, "%02d:%02d:%02d", teste1.Hours, teste1.Minutes,
+				teste1.Seconds);
+		Lcd_string(&LCD, textoHora);
+
+		/*HAL_RTC_GetDate(&hrtc, &teste, RTC_FORMAT_BIN);
+		HAL_RTC_GetTime(&hrtc, &teste1, RTC_FORMAT_BIN);
+
 		/*raw = Analog_Read(&hadc1);
 		Lcd_cursor(&LCD, 0, 12);
 		sprintf(texto, "%04d", raw);
@@ -137,64 +172,75 @@ int main(void) {
 		raw = Read_Button(&hadc1, 100);
 		Lcd_cursor(&LCD, 1, 12);
 		sprintf(texto, "%04d", raw);
-		Lcd_string(&LCD, texto);*/
+		Lcd_string(&LCD, texto);
 		Lcd_cursor(&LCD, 1, 0);
 		Lcd_string(&LCD, TUESDAY_TEXT);
-		RTC_DateTypeDef teste;
-		HAL_RTC_GetDate(&hrtc, &teste, RTC_FORMAT_BIN);
-		sDate.Date += 1;
+
 		Lcd_cursor(&LCD, 1, 5);
-		sprintf(texto, "%02d/%02d/%04d", sDate.Date%31, sDate.Month, 2000+sDate.Year);
-		Lcd_string(&LCD, texto);
+		sprintf(textoData, "%02d/%02d/%04d", teste.Date%31, teste.Month, 2000+teste.Year);
+		Lcd_string(&LCD, textoData);
 
-		/* USER CODE END WHILE */
 
-		/* USER CODE BEGIN 3 */
+		Lcd_cursor(&LCD, 0, 0);
+		sprintf(textoHora, "%02d:%02d:%02d", teste1.Hours, teste1.Minutes, teste1.Seconds);
+		Lcd_string(&LCD, textoHora);
+
+		teste2 = RTC_IT_ALRA;
+		Lcd_cursor(&LCD, 0, 12);
+		sprintf(textoStatus, "%03d", teste2);
+		Lcd_string(&LCD, textoStatus);*/
+
+    /* USER CODE END WHILE */
+
+    /* USER CODE BEGIN 3 */
 	}
-	/* USER CODE END 3 */
+  /* USER CODE END 3 */
 }
 
 /**
- * @brief System Clock Configuration
- * @retval None
- */
-void SystemClock_Config(void) {
-	RCC_OscInitTypeDef RCC_OscInitStruct = { 0 };
-	RCC_ClkInitTypeDef RCC_ClkInitStruct = { 0 };
-	RCC_PeriphCLKInitTypeDef PeriphClkInit = { 0 };
+  * @brief System Clock Configuration
+  * @retval None
+  */
+void SystemClock_Config(void)
+{
+  RCC_OscInitTypeDef RCC_OscInitStruct = {0};
+  RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};
+  RCC_PeriphCLKInitTypeDef PeriphClkInit = {0};
 
-	/** Initializes the RCC Oscillators according to the specified parameters
-	 * in the RCC_OscInitTypeDef structure.
-	 */
-	RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSI
-			| RCC_OSCILLATORTYPE_LSE;
-	RCC_OscInitStruct.LSEState = RCC_LSE_ON;
-	RCC_OscInitStruct.HSIState = RCC_HSI_ON;
-	RCC_OscInitStruct.HSICalibrationValue = RCC_HSICALIBRATION_DEFAULT;
-	RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
-	RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSI_DIV2;
-	RCC_OscInitStruct.PLL.PLLMUL = RCC_PLL_MUL16;
-	if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK) {
-		Error_Handler();
-	}
-	/** Initializes the CPU, AHB and APB buses clocks
-	 */
-	RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK | RCC_CLOCKTYPE_SYSCLK
-			| RCC_CLOCKTYPE_PCLK1 | RCC_CLOCKTYPE_PCLK2;
-	RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
-	RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
-	RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV2;
-	RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV1;
+  /** Initializes the RCC Oscillators according to the specified parameters
+  * in the RCC_OscInitTypeDef structure.
+  */
+  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSI|RCC_OSCILLATORTYPE_LSE;
+  RCC_OscInitStruct.LSEState = RCC_LSE_ON;
+  RCC_OscInitStruct.HSIState = RCC_HSI_ON;
+  RCC_OscInitStruct.HSICalibrationValue = RCC_HSICALIBRATION_DEFAULT;
+  RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
+  RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSI_DIV2;
+  RCC_OscInitStruct.PLL.PLLMUL = RCC_PLL_MUL16;
+  if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /** Initializes the CPU, AHB and APB buses clocks
+  */
+  RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK|RCC_CLOCKTYPE_SYSCLK
+                              |RCC_CLOCKTYPE_PCLK1|RCC_CLOCKTYPE_PCLK2;
+  RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
+  RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
+  RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV2;
+  RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV1;
 
-	if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_2) != HAL_OK) {
-		Error_Handler();
-	}
-	PeriphClkInit.PeriphClockSelection = RCC_PERIPHCLK_RTC | RCC_PERIPHCLK_ADC;
-	PeriphClkInit.RTCClockSelection = RCC_RTCCLKSOURCE_LSE;
-	PeriphClkInit.AdcClockSelection = RCC_ADCPCLK2_DIV6;
-	if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInit) != HAL_OK) {
-		Error_Handler();
-	}
+  if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_2) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  PeriphClkInit.PeriphClockSelection = RCC_PERIPHCLK_RTC|RCC_PERIPHCLK_ADC;
+  PeriphClkInit.RTCClockSelection = RCC_RTCCLKSOURCE_LSE;
+  PeriphClkInit.AdcClockSelection = RCC_ADCPCLK2_DIV6;
+  if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInit) != HAL_OK)
+  {
+    Error_Handler();
+  }
 }
 
 /* USER CODE BEGIN 4 */
@@ -202,30 +248,31 @@ void SystemClock_Config(void) {
 /* USER CODE END 4 */
 
 /**
- * @brief  This function is executed in case of error occurrence.
- * @retval None
- */
-void Error_Handler(void) {
-	/* USER CODE BEGIN Error_Handler_Debug */
+  * @brief  This function is executed in case of error occurrence.
+  * @retval None
+  */
+void Error_Handler(void)
+{
+  /* USER CODE BEGIN Error_Handler_Debug */
 	/* User can add his own implementation to report the HAL error return state */
 
-	/* USER CODE END Error_Handler_Debug */
+  /* USER CODE END Error_Handler_Debug */
 }
 
 #ifdef  USE_FULL_ASSERT
 /**
- * @brief  Reports the name of the source file and the source line number
- *         where the assert_param error has occurred.
- * @param  file: pointer to the source file name
- * @param  line: assert_param error line source number
- * @retval None
- */
+  * @brief  Reports the name of the source file and the source line number
+  *         where the assert_param error has occurred.
+  * @param  file: pointer to the source file name
+  * @param  line: assert_param error line source number
+  * @retval None
+  */
 void assert_failed(uint8_t *file, uint32_t line)
 {
-	/* USER CODE BEGIN 6 */
+  /* USER CODE BEGIN 6 */
 	/* User can add his own implementation to report the file name and line number,
 	 tex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
-	/* USER CODE END 6 */
+  /* USER CODE END 6 */
 }
 #endif /* USE_FULL_ASSERT */
 

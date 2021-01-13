@@ -19,6 +19,10 @@
 #define SATURDAY_TEXT 	"SAT"
 #define SUNDAY_TEXT 	"DOM"
 
+#define DATE_FORMAT		"DDMMYY"
+
+#define TIME_FORMAT		"HHMMSS"
+
 volatile uint8_t RTC_KeepAlarm;
 
 void RTC_SetDateTime(uint8_t date, uint8_t month, uint16_t year, uint8_t weekday, uint8_t hour, uint8_t minute, uint8_t second);
