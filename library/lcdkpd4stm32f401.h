@@ -8,7 +8,6 @@
 #ifndef INC_LCDKPD4STM32F401_H_
 #define INC_LCDKPD4STM32F401_H_
 
-#include "adc.h"
 #include "main.h"
 
 #define BTN_RANGE 50
