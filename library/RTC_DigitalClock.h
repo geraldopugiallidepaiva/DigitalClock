@@ -10,7 +10,9 @@
 #define INC_RTC_DIGITALCLOCK_H_
 
 #include "main.h"
+
 #include "lcd.h"
+#include "lcdkpd4stm32f401.h"
 
 extern RTC_HandleTypeDef hrtc;
 extern Lcd_HandleTypeDef LCD;
@@ -44,7 +46,20 @@ volatile uint8_t RTC_KeepAlarm;
 
 uint16_t RTC_YearComplement;
 
+uint8_t FSM_State;
+uint8_t FSM_NextState;
+
 uint8_t StateChanged;
+uint16_t ButtonIsPressed;
+
+RTC_TimeTypeDef setTime;
+RTC_DateTypeDef setDate;
+
+uint8_t TimeCursor;
+uint8_t DateCursor;
+
+uint8_t TimeFormat;
+uint8_t DateFormat;
 
 typedef enum {
 	DATE_WWW_DD_MM_YY,
@@ -75,7 +90,7 @@ uint8_t DC_TimeType;
 
 void RTC_DC_SetDateTime(uint8_t date, uint8_t month, uint16_t year, uint8_t hour, uint8_t minute, uint8_t second);
 void RTC_DC_SetAlarm(uint8_t hour, uint8_t minute, uint8_t second, uint8_t keep);
-void RTC_DC_Display(uint8_t state);
+void RTC_DC_Display();
 void RTC_DC_StartStopChrono();
 void RTC_DC_UpdateChrono();
 void RTC_DC_CorrectTime();

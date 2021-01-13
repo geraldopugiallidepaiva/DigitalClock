@@ -22,8 +22,6 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include "lcd.h"
-#include "lcdkpd4stm32f401.h"
 #include "RTC_DigitalClock.h"
 /* USER CODE END Includes */
 
@@ -50,9 +48,6 @@ RTC_HandleTypeDef hrtc;
 UART_HandleTypeDef huart2;
 
 /* USER CODE BEGIN PV */
-RTC_DateTypeDef sDate;
-RTC_AlarmTypeDef sAlarm;
-RTC_TimeTypeDef sTime;
 Lcd_HandleTypeDef LCD;
 
 /* USER CODE END PV */
@@ -69,7 +64,7 @@ static void MX_RTC_Init(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-volatile uint16_t raw = 0;
+extern uint8_t FSM_State;
 /* USER CODE END 0 */
 
 /**
@@ -129,12 +124,10 @@ int main(void) {
 	// RTC Initialization
 	RTC_DC_SetDateTime(13, 01, 2021, 11, 39, 00);
 
+	FSM_State = 0;
+
 	while (1) {
-		extern uint8_t DC_DateType;
-		DC_DateType = DATE_WWW_DD_MM_YYYY;
-		extern uint8_t DC_TimeType;
-		DC_TimeType = TIME_HH_MM_SS;
-		RTC_DC_Display(0);
+		RTC_DC_Display();
 
 		/*HAL_RTC_GetDate(&hrtc, &teste, RTC_FORMAT_BIN);
 		 HAL_RTC_GetTime(&hrtc, &teste1, RTC_FORMAT_BIN);

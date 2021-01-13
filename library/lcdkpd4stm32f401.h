@@ -10,6 +10,8 @@
 
 #include "main.h"
 
+extern ADC_HandleTypeDef hadc1;
+
 #define BTN_RANGE 50
 
 typedef enum {

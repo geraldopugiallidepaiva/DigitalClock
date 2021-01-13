@@ -42,12 +42,12 @@ void RTC_DC_SetAlarm(uint8_t hour, uint8_t minute, uint8_t second, uint8_t keep)
 	return;
 }
 
-void RTC_DC_Display(uint8_t state) {
-	if(StateChanged != 1){
+void RTC_DC_Display() {
+	if (StateChanged != 1) {
 		Lcd_clear(&LCD);
 		StateChanged = 1;
 	}
-	switch (state) {
+	switch (FSM_State) {
 	// [ERROR State]
 	default: {
 		Lcd_cursor(&LCD, 0, 6);
@@ -295,16 +295,319 @@ void RTC_DC_Display(uint8_t state) {
 			break;
 		}
 		}
+		uint16_t raw = Read_Button(&hadc1, 100);
+		if (raw != NONE) {
+			ButtonIsPressed = raw;
+		} else {
+			if (ButtonIsPressed == SELECT) {
+				FSM_State = 1;
+				ButtonIsPressed = NONE;
+				StateChanged = 0;
+			}
+		}
 		break;
 	}
 		// [State 1] Settings menu
 	case 1: {
-
+		Lcd_cursor(&LCD, 0, 0);
+		Lcd_string(&LCD, "----- Menu -----");
+		switch (FSM_NextState) {
+		default: {
+			break;
+		}
+		case 0: {
+			Lcd_cursor(&LCD, 1, 0);
+			Lcd_string(&LCD, "Clock Display");
+			break;
+		}
+		case 2: {
+			Lcd_cursor(&LCD, 1, 0);
+			Lcd_string(&LCD, "Time Set");
+			HAL_RTC_GetTime(&hrtc, &setTime, RTC_FORMAT_BIN);
+			HAL_RTC_GetDate(&hrtc, &setDate, RTC_FORMAT_BIN);
+			break;
+		}
+		case 3: {
+			Lcd_cursor(&LCD, 1, 0);
+			Lcd_string(&LCD, "Date Set");
+			HAL_RTC_GetTime(&hrtc, &setTime, RTC_FORMAT_BIN);
+			HAL_RTC_GetDate(&hrtc, &setDate, RTC_FORMAT_BIN);
+			break;
+		}
+		case 4: {
+			Lcd_cursor(&LCD, 1, 0);
+			Lcd_string(&LCD, "Time Format");
+			break;
+		}
+		case 5: {
+			Lcd_cursor(&LCD, 1, 0);
+			Lcd_string(&LCD, "Date Format");
+			break;
+		}
+		}
+		uint16_t raw = Read_Button(&hadc1, 1000);
+		if (raw != NONE) {
+			ButtonIsPressed = raw;
+		} else {
+			if (ButtonIsPressed == SELECT) {
+				FSM_State = FSM_NextState;
+				ButtonIsPressed = NONE;
+				StateChanged = 0;
+			}
+			if (ButtonIsPressed == UP) {
+				if (FSM_NextState == 0) {
+					FSM_NextState = 2;
+				} else {
+					if (FSM_NextState == 5) {
+						FSM_NextState = 0;
+					} else {
+						FSM_NextState++;
+					}
+				}
+				ButtonIsPressed = NONE;
+				StateChanged = 0;
+				Lcd_cursor(&LCD, 1, 0);
+				Lcd_string(&LCD, "                ");
+				HAL_Delay(10);
+			}
+			if (ButtonIsPressed == DOWN) {
+				if (FSM_NextState == 2) {
+					FSM_NextState = 0;
+				} else {
+					if (FSM_NextState == 0) {
+						FSM_NextState = 5;
+					} else {
+						FSM_NextState--;
+					}
+				}
+				ButtonIsPressed = NONE;
+				StateChanged = 0;
+				Lcd_cursor(&LCD, 1, 0);
+				Lcd_string(&LCD, "                ");
+				HAL_Delay(10);
+			}
+		}
 		break;
 	}
 		// [State 2] Time set
 	case 2: {
+		char textTime[16];
+		sprintf(textTime, "%02d:%02d:%02d", setTime.Hours, setTime.Minutes,
+				setTime.Seconds);
+		Lcd_cursor(&LCD, 0, 4);
+		Lcd_string(&LCD, textTime);
+		switch (TimeCursor) {
+		default: {
+			break;
+		}
+		case 0: {
+			Lcd_cursor(&LCD, 1, 4);
+			char cursor[2];
+			cursor[0] = 0b01011110;
+			cursor[1] = 0;
+			Lcd_string(&LCD, cursor);
+			break;
+		}
+		case 1: {
+			Lcd_cursor(&LCD, 1, 5);
+			char cursor[2];
+			cursor[0] = 0b01011110;
+			cursor[1] = 0;
+			Lcd_string(&LCD, cursor);
+			break;
+		}
+		case 2: {
+			Lcd_cursor(&LCD, 1, 7);
+			char cursor[2];
+			cursor[0] = 0b01011110;
+			cursor[1] = 0;
+			Lcd_string(&LCD, cursor);
+			break;
+		}
+		case 3: {
+			Lcd_cursor(&LCD, 1, 8);
+			char cursor[2];
+			cursor[0] = 0b01011110;
+			cursor[1] = 0;
+			Lcd_string(&LCD, cursor);
+			break;
+		}
+		case 4: {
+			Lcd_cursor(&LCD, 1, 10);
+			char cursor[2];
+			cursor[0] = 0b01011110;
+			cursor[1] = 0;
+			Lcd_string(&LCD, cursor);
+			break;
+		}
+		case 5: {
+			Lcd_cursor(&LCD, 1, 11);
+			char cursor[2];
+			cursor[0] = 0b01011110;
+			cursor[1] = 0;
+			Lcd_string(&LCD, cursor);
+			break;
+		}
+		}
 
+		uint16_t raw = Read_Button(&hadc1, 1000);
+		if (raw != NONE) {
+			ButtonIsPressed = raw;
+		} else {
+			if (ButtonIsPressed == SELECT) {
+				FSM_State = 1;
+				ButtonIsPressed = NONE;
+				StateChanged = 0;
+				RTC_DC_SetDateTime(setDate.Date, setDate.Month,
+						setDate.Year + RTC_YearComplement, setTime.Hours,
+						setTime.Minutes, setTime.Seconds);
+			}
+			if (ButtonIsPressed == RIGHT) {
+				if (TimeCursor == 5) {
+					TimeCursor = 0;
+				} else {
+					TimeCursor++;
+				}
+				ButtonIsPressed = NONE;
+				Lcd_cursor(&LCD, 1, 0);
+				Lcd_string(&LCD, "                ");
+				HAL_Delay(10);
+			}
+			if (ButtonIsPressed == LEFT) {
+				if (TimeCursor == 0) {
+					TimeCursor = 5;
+				} else {
+					TimeCursor--;
+				}
+				ButtonIsPressed = NONE;
+				Lcd_cursor(&LCD, 1, 0);
+				Lcd_string(&LCD, "                ");
+				HAL_Delay(10);
+			}
+			if (ButtonIsPressed == UP) {
+				switch (TimeCursor) {
+				default: {
+					break;
+				}
+				case 0: {
+					if (setTime.Hours >= 13) {
+						setTime.Hours = setTime.Hours % 10;
+					} else {
+						setTime.Hours += 10;
+					}
+					break;
+				}
+				case 1: {
+					if (setTime.Hours >= 23) {
+						setTime.Hours = 00;
+					} else {
+						setTime.Hours += 1;
+					}
+					break;
+				}
+				case 2: {
+					if (setTime.Minutes >= 50) {
+						setTime.Minutes = setTime.Minutes % 10;
+					} else {
+						setTime.Minutes += 10;
+					}
+					break;
+				}
+				case 3: {
+					if (setTime.Minutes >= 59) {
+						setTime.Minutes = 00;
+					} else {
+						setTime.Minutes += 1;
+					}
+					break;
+				}
+				case 4: {
+					if (setTime.Seconds >= 50) {
+						setTime.Seconds = setTime.Seconds % 10;
+					} else {
+						setTime.Seconds += 10;
+					}
+					break;
+				}
+				case 5: {
+					if (setTime.Seconds >= 59) {
+						setTime.Seconds = 00;
+					} else {
+						setTime.Seconds += 1;
+					}
+					break;
+				}
+				}
+				ButtonIsPressed = NONE;
+				Lcd_cursor(&LCD, 1, 0);
+				Lcd_string(&LCD, "                ");
+				HAL_Delay(10);
+			}
+			if (ButtonIsPressed == DOWN) {
+				switch (TimeCursor) {
+				default: {
+					break;
+				}
+				case 0: {
+					if (setTime.Hours <= 3) {
+						setTime.Hours = setTime.Hours % 10 + 20;
+					} else {
+						if (setTime.Hours > 3 && setTime.Hours <= 9) {
+							setTime.Hours = setTime.Hours % 10 + 10;
+						}
+						else{
+							setTime.Hours -= 10;
+						}
+					}
+					break;
+				}
+				case 1: {
+					if (setTime.Hours <= 0) {
+						setTime.Hours = 23;
+					} else {
+						setTime.Hours -= 1;
+					}
+					break;
+				}
+				case 2: {
+					if (setTime.Minutes <= 9) {
+						setTime.Minutes = setTime.Minutes % 10 + 50;
+					} else {
+						setTime.Minutes -= 10;
+					}
+					break;
+				}
+				case 3: {
+					if (setTime.Minutes <= 0) {
+						setTime.Minutes = 59;
+					} else {
+						setTime.Minutes -= 1;
+					}
+					break;
+				}
+				case 4: {
+					if (setTime.Seconds <= 9) {
+						setTime.Seconds = setTime.Seconds % 10 + 50;
+					} else {
+						setTime.Seconds -= 10;
+					}
+					break;
+				}
+				case 5: {
+					if (setTime.Seconds <= 0) {
+						setTime.Seconds = 59;
+					} else {
+						setTime.Seconds -= 1;
+					}
+					break;
+				}
+				}
+				ButtonIsPressed = NONE;
+				Lcd_cursor(&LCD, 1, 0);
+				Lcd_string(&LCD, "                ");
+				HAL_Delay(10);
+			}
+		}
 		break;
 	}
 		// [State 3] Date set
