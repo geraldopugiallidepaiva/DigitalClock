@@ -42,42 +42,34 @@ extern Lcd_HandleTypeDef LCD;
 #define NOVEMBER_TEXT 	"Nov"
 #define DECEMBER_TEXT 	"Dec"
 
-volatile uint8_t RTC_KeepAlarm;
-
-uint16_t RTC_YearComplement;
-
 uint8_t FSM_State;
 uint8_t FSM_NextState;
 
 uint8_t StateChanged;
 uint16_t ButtonIsPressed;
 
-RTC_TimeTypeDef setTime;
-RTC_DateTypeDef setDate;
+RTC_TimeTypeDef 	setTime;
+RTC_DateTypeDef 	setDate;
+RTC_AlarmTypeDef 	setAlarm;
 
 uint8_t TimeCursor;
 uint8_t DateCursor;
+uint8_t AlarmCursor;
 
 uint8_t TimeFormat;
 uint8_t DateFormat;
 
+Lcd_HandleTypeDef LCD;
+
 typedef enum {
 	DATE_WWW_DD_MM_YY,
-	DATE_WWW_DD_MM_YYYY,
 	DATE_WWW_DD_MMM_YY,
-	DATE_WWW_DD_MMM_YYYY,
 	DATE_DD_MM_YY,
-	DATE_DD_MM_YYYY,
 	DATE_DD_MMM_YY,
-	DATE_DD_MMM_YYYY,
 	DATE_WWW_MM_DD_YY,
-	DATE_WWW_MM_DD_YYYY,
 	DATE_WWW_MMM_DD_YY,
-	DATE_WWW_MMM_DD_YYYY,
 	DATE_MM_DD_YY,
-	DATE_MM_DD_YYYY,
 	DATE_MMM_DD_YY,
-	DATE_MMM_DD_YYYY,
 } DC_DateTypeDef;
 
 typedef enum {
@@ -85,14 +77,13 @@ typedef enum {
 	TIME_HH_MM,
 } DC_TimeTypeDef;
 
-uint8_t DC_DateType;
-uint8_t DC_TimeType;
+DC_DateTypeDef DC_DateType;
+DC_TimeTypeDef DC_TimeType;
 
+void RTC_DC_Init();
 void RTC_DC_SetDateTime(uint8_t date, uint8_t month, uint16_t year, uint8_t hour, uint8_t minute, uint8_t second);
-void RTC_DC_SetAlarm(uint8_t hour, uint8_t minute, uint8_t second, uint8_t keep);
+void RTC_DC_SetAlarm(uint8_t hour, uint8_t minute, uint8_t second);
+uint8_t RTC_DC_CheckDate(uint8_t date, uint8_t month, uint16_t year);
 void RTC_DC_Display();
-void RTC_DC_StartStopChrono();
-void RTC_DC_UpdateChrono();
-void RTC_DC_CorrectTime();
 
 #endif /* INC_INC_RTC_DIGITALCLOCK_H_ */

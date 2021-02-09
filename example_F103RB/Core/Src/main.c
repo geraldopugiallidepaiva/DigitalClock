@@ -48,7 +48,6 @@ RTC_HandleTypeDef hrtc;
 UART_HandleTypeDef huart2;
 
 /* USER CODE BEGIN PV */
-Lcd_HandleTypeDef LCD;
 
 /* USER CODE END PV */
 
@@ -64,7 +63,7 @@ static void MX_RTC_Init(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-extern uint8_t FSM_State;
+
 /* USER CODE END 0 */
 
 /**
@@ -103,8 +102,6 @@ int main(void) {
 
 	/* Infinite loop */
 	/* USER CODE BEGIN WHILE */
-
-	// LCD Initialization
 	Lcd_PortType ports[] = {
 		GPIOB,
 		GPIOB,
@@ -118,39 +115,11 @@ int main(void) {
 	GPIO_PIN_8 };
 	LCD = Lcd_create(ports, pins, GPIOA, GPIO_PIN_9, GPIOC,
 	GPIO_PIN_7, LCD_4_BIT_MODE);
-	HAL_GPIO_WritePin(GPIOB, GPIO_PIN_6, 1);
-	Lcd_clear(&LCD);
+
+	RTC_DC_Init();
 
 	while (1) {
 		RTC_DC_Display();
-
-		/*HAL_RTC_GetDate(&hrtc, &teste, RTC_FORMAT_BIN);
-		 HAL_RTC_GetTime(&hrtc, &teste1, RTC_FORMAT_BIN);
-
-		 /*raw = Analog_Read(&hadc1);
-		 Lcd_cursor(&LCD, 0, 12);
-		 sprintf(texto, "%04d", raw);
-		 Lcd_string(&LCD, texto);
-		 raw = Read_Button(&hadc1, 100);
-		 Lcd_cursor(&LCD, 1, 12);
-		 sprintf(texto, "%04d", raw);
-		 Lcd_string(&LCD, texto);
-		 Lcd_cursor(&LCD, 1, 0);
-		 Lcd_string(&LCD, TUESDAY_TEXT);
-
-		 Lcd_cursor(&LCD, 1, 5);
-		 sprintf(textoData, "%02d/%02d/%04d", teste.Date%31, teste.Month, 2000+teste.Year);
-		 Lcd_string(&LCD, textoData);
-
-
-		 Lcd_cursor(&LCD, 0, 0);
-		 sprintf(textoHora, "%02d:%02d:%02d", teste1.Hours, teste1.Minutes, teste1.Seconds);
-		 Lcd_string(&LCD, textoHora);
-
-		 teste2 = RTC_IT_ALRA;
-		 Lcd_cursor(&LCD, 0, 12);
-		 sprintf(textoStatus, "%03d", teste2);
-		 Lcd_string(&LCD, textoStatus);*/
 
 		/* USER CODE END WHILE */
 
