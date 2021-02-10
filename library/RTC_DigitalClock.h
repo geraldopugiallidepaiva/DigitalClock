@@ -69,6 +69,9 @@ Lcd_HandleTypeDef LCD;
 
 uint16_t blinkCounter;
 
+Lcd_PortType ports[4];
+Lcd_PinType pins[4];
+
 typedef enum {
 	DATE_WWW_DD_MM_YY,
 	DATE_WWW_DD_MMM_YY,

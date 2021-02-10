@@ -9,6 +9,19 @@
 #include "RTC_DigitalClock.h"
 
 void RTC_DC_Init() {
+	ports[0] = GPIOB;
+	ports[1] = GPIOB;
+	ports[2] = GPIOB;
+	ports[3] = GPIOA;
+
+	pins[0] = GPIO_PIN_5;
+	pins[1] = GPIO_PIN_4;
+	pins[2] = GPIO_PIN_10;
+	pins[3] = GPIO_PIN_8;
+
+	LCD = Lcd_create(ports, pins, GPIOA, GPIO_PIN_9, GPIOC,
+	GPIO_PIN_7, LCD_4_BIT_MODE);
+
 	HAL_GPIO_WritePin(GPIOB, GPIO_PIN_6, 1);
 	blinkCounter = 0;
 	Lcd_clear(&LCD);
@@ -52,7 +65,7 @@ void RTC_DC_SetAlarm(uint8_t hour, uint8_t minute, uint8_t second) {
 
 void RTC_DC_AlarmInterrupt(void){
 HAL_RTC_DeactivateAlarm(hrtc, RTC_ALARM_A);
-FSM_State = 7;
+FSM_State = 8;
 
 /*Insert your own alarm event action*/
 }
@@ -325,6 +338,11 @@ void RTC_DC_Display() {
 			HAL_RTC_GetAlarm(&hrtc, &setAlarm, RTC_ALARM_A, RTC_FORMAT_BIN);
 			break;
 		}
+		case 7: {
+			Lcd_cursor(&LCD, 1, 0);
+			Lcd_string(&LCD, "Alarm Clear");
+			break;
+		}
 		}
 		uint16_t raw = Read_Button(&hadc1, 10);
 		if (raw != NONE) {
@@ -339,7 +357,7 @@ void RTC_DC_Display() {
 				if (FSM_NextState == 0) {
 					FSM_NextState = 2;
 				} else {
-					if (FSM_NextState == 6) {
+					if (FSM_NextState == 7) {
 						FSM_NextState = 0;
 					} else {
 						FSM_NextState++;
@@ -356,7 +374,7 @@ void RTC_DC_Display() {
 					FSM_NextState = 0;
 				} else {
 					if (FSM_NextState == 0) {
-						FSM_NextState = 6;
+						FSM_NextState = 7;
 					} else {
 						FSM_NextState--;
 					}
@@ -1196,8 +1214,34 @@ void RTC_DC_Display() {
 		}
 		break;
 	}
-		// [State 7] Alarm indicator
+		// [State 7] Clear alarm
 	case 7: {
+		Lcd_cursor(&LCD, 0, 0);
+		Lcd_string(&LCD, "Clearing alarm  ");
+		HAL_Delay(500);
+		Lcd_cursor(&LCD, 1, 0);
+		Lcd_string(&LCD, "....            ");
+		HAL_Delay(500);
+		Lcd_cursor(&LCD, 1, 0);
+		Lcd_string(&LCD, "........        ");
+		HAL_Delay(500);
+		Lcd_cursor(&LCD, 1, 0);
+		Lcd_string(&LCD, "............    ");
+		HAL_Delay(500);
+		Lcd_cursor(&LCD, 1, 0);
+		Lcd_string(&LCD, "................");
+		HAL_RTC_DeactivateAlarm(&hrtc, RTC_ALARM_A);
+		HAL_Delay(300);
+		Lcd_clear(&LCD);
+		Lcd_cursor(&LCD, 0, 0);
+		Lcd_string(&LCD, "  Alarm cleared ");
+		HAL_Delay(1000);
+		StateChanged = 0;
+		FSM_State = 0;
+		break;
+	}
+		// [State 8] Alarm indicator
+	case 8: {
 		Lcd_cursor(&LCD, 0, 0);
 		Lcd_string(&LCD, ALARM_TEXT);
 		Lcd_cursor(&LCD, 1, 0);
