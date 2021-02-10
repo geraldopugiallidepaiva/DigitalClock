@@ -102,24 +102,9 @@ int main(void) {
 
 	/* Infinite loop */
 	/* USER CODE BEGIN WHILE */
-	Lcd_PortType ports[] = {
-		GPIOB,
-		GPIOB,
-		GPIOB,
-		GPIOA
-	};
-	Lcd_PinType pins[] = {
-	GPIO_PIN_5,
-	GPIO_PIN_4,
-	GPIO_PIN_10,
-	GPIO_PIN_8 };
-	LCD = Lcd_create(ports, pins, GPIOA, GPIO_PIN_9, GPIOC,
-	GPIO_PIN_7, LCD_4_BIT_MODE);
-
 	RTC_DC_Init();
 	while (1) {
 		RTC_DC_Display();
-
 		/* USER CODE END WHILE */
 
 		/* USER CODE BEGIN 3 */
