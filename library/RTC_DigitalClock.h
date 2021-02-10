@@ -42,6 +42,12 @@ extern Lcd_HandleTypeDef LCD;
 #define NOVEMBER_TEXT 	"Nov"
 #define DECEMBER_TEXT 	"Dec"
 
+// Alarm function
+#define RTC_DC_AlarmInterrupt(void) HAL_RTC_AlarmAEventCallback(RTC_HandleTypeDef * hrtc)
+
+// Alarm indicator (keep the 16 characters or move the cursor for smaller text arrays)
+#define ALARM_TEXT		"    ALARM!!!    "
+
 uint8_t FSM_State;
 uint8_t FSM_NextState;
 
@@ -60,6 +66,8 @@ uint8_t TimeFormat;
 uint8_t DateFormat;
 
 Lcd_HandleTypeDef LCD;
+
+uint16_t blinkCounter;
 
 typedef enum {
 	DATE_WWW_DD_MM_YY,

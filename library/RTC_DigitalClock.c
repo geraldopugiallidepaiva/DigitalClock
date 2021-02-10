@@ -9,8 +9,8 @@
 #include "RTC_DigitalClock.h"
 
 void RTC_DC_Init() {
-
 	HAL_GPIO_WritePin(GPIOB, GPIO_PIN_6, 1);
+	blinkCounter = 0;
 	Lcd_clear(&LCD);
 
 	FSM_State = 1;
@@ -50,10 +50,11 @@ void RTC_DC_SetAlarm(uint8_t hour, uint8_t minute, uint8_t second) {
 	return;
 }
 
-void HAL_RTC_AlarmAEventCallback(RTC_HandleTypeDef * hrtc) {
-	HAL_RTC_DeactivateAlarm(hrtc, RTC_ALARM_A);
-	HAL_GPIO_TogglePin(LD2_GPIO_Port, LD2_Pin);
+void RTC_DC_AlarmInterrupt(void){
+HAL_RTC_DeactivateAlarm(hrtc, RTC_ALARM_A);
+FSM_State = 7;
 
+/*Insert your own alarm event action*/
 }
 
 uint8_t RTC_DC_CheckDate(uint8_t date, uint8_t month, uint16_t year) {
@@ -1195,6 +1196,29 @@ void RTC_DC_Display() {
 		}
 		break;
 	}
+		// [State 7] Alarm indicator
+	case 7: {
+		Lcd_cursor(&LCD, 0, 0);
+		Lcd_string(&LCD, ALARM_TEXT);
+		Lcd_cursor(&LCD, 1, 0);
+		Lcd_string(&LCD, "  Press SELECT  ");
+		blinkCounter++;
+		if (blinkCounter >= 10) {
+			HAL_GPIO_TogglePin(GPIOB, GPIO_PIN_6);
+			blinkCounter = 0;
+		}
+		uint16_t raw = Read_Button(&hadc1, 10);
+		if (raw != NONE) {
+			ButtonIsPressed = raw;
+		} else {
+			if (ButtonIsPressed == SELECT) {
+				HAL_GPIO_WritePin(GPIOB, GPIO_PIN_6, 1);
+				FSM_State = 0;
+				ButtonIsPressed = NONE;
+				StateChanged = 0;
+			}
+		}
+		break;
 	}
-
+	}
 }
