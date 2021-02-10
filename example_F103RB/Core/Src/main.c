@@ -117,7 +117,6 @@ int main(void) {
 	GPIO_PIN_7, LCD_4_BIT_MODE);
 
 	RTC_DC_Init();
-
 	while (1) {
 		RTC_DC_Display();
 
