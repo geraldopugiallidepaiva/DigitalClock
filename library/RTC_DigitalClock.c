@@ -8,6 +8,7 @@
 
 #include "RTC_DigitalClock.h"
 
+// Digital clock initialization
 void RTC_DC_Init() {
 	ports[0] = GPIOB;
 	ports[1] = GPIOB;
@@ -33,6 +34,7 @@ void RTC_DC_Init() {
 	return;
 }
 
+// Digital clock set date and time
 void RTC_DC_SetDateTime(uint8_t date, uint8_t month, uint16_t year,
 		uint8_t hour, uint8_t minute, uint8_t second) {
 	RTC_DateTypeDef auxDate;
@@ -52,6 +54,7 @@ void RTC_DC_SetDateTime(uint8_t date, uint8_t month, uint16_t year,
 	return;
 }
 
+// Digital clock set alarm time
 void RTC_DC_SetAlarm(uint8_t hour, uint8_t minute, uint8_t second) {
 	RTC_AlarmTypeDef auxAlarm;
 
@@ -63,6 +66,7 @@ void RTC_DC_SetAlarm(uint8_t hour, uint8_t minute, uint8_t second) {
 	return;
 }
 
+// Digital clock alarm interrupt
 void RTC_DC_AlarmInterrupt(void){
 HAL_RTC_DeactivateAlarm(hrtc, RTC_ALARM_A);
 FSM_State = 8;
@@ -70,6 +74,7 @@ FSM_State = 8;
 /*Insert your own alarm event action*/
 }
 
+// Digital clock check date validity
 uint8_t RTC_DC_CheckDate(uint8_t date, uint8_t month, uint16_t year) {
 	uint8_t status = 1;
 	if (year % 4 == 0) {
@@ -93,6 +98,7 @@ uint8_t RTC_DC_CheckDate(uint8_t date, uint8_t month, uint16_t year) {
 	return status;
 }
 
+// Digital clock routine
 void RTC_DC_Display() {
 	if (StateChanged != 1) {
 		Lcd_clear(&LCD);
